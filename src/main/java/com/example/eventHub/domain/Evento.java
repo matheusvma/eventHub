@@ -11,14 +11,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "events")
+@Table(name = "eventos")
 @Schema(description = "Entidade que representa um evento")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class Evento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,24 +28,28 @@ public class Event {
 
     @NotBlank(message = "O nome do evento não pode ser vazio")
     @Column(nullable = false)
-    @Schema(description = "Nome do evento", example = "Festival de Música 2026")
+    @Schema(description = "Nome do evento", example = "Festival de Música 2026", required = true)
     private String nome;
 
     @NotNull(message = "A data do evento é obrigatória")
     @FutureOrPresent(message = "A data do evento não pode ser no passado")
     @Column(nullable = false)
-    @Schema(description = "Data e hora do evento", example = "2026-12-31T20:00:00")
+    @Schema(description = "Data e hora do evento", example = "2026-12-31T20:00:00", required = true)
     private LocalDateTime data;
 
     @NotBlank(message = "O local do evento não pode ser vazio")
     @Column(nullable = false)
-    @Schema(description = "Local onde o evento será realizado", example = "Estádio Municipal")
+    @Schema(description = "Local onde o evento será realizado", example = "Estádio Municipal", required = true)
     private String local;
 
     @NotNull(message = "A capacidade do evento é obrigatória")
     @Positive(message = "A capacidade deve ser um número positivo")
     @Column(nullable = false)
-    @Schema(description = "Capacidade máxima de participantes", example = "5000")
+    @Schema(description = "Capacidade máxima de participantes", example = "5000", required = true)
     private Integer capacidade;
+
+    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Schema(description = "Lista de participantes inscritos neste evento", accessMode = Schema.AccessMode.READ_ONLY)
+    private List<Ingresso> participantes;
 }
 

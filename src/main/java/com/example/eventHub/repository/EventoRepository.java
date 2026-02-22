@@ -1,11 +1,10 @@
 package com.example.eventHub.repository;
 
-import com.example.eventHub.domain.Event;
+import com.example.eventHub.domain.Evento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Long> {
-
+public interface EventoRepository extends JpaRepository<Evento, Long> {
 }
 
