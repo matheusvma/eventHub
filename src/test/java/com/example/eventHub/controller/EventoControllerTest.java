@@ -203,14 +203,10 @@ class EventoControllerTest {
         Evento eventoInvalido = new Evento();
         // Não preenchendo campos obrigatórios
 
-        when(eventoService.createEvento(any(Evento.class))).thenReturn(eventoInvalido);
-
         mockMvc.perform(post(API_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(eventoInvalido)))
-                .andExpect(status().isCreated());
-
-        verify(eventoService).createEvento(any(Evento.class));
+                .andExpect(status().isBadRequest());
     }
 
     @Test

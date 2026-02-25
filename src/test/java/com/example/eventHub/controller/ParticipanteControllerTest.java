@@ -195,14 +195,10 @@ class ParticipanteControllerTest {
         participanteInvalido.setNome("João Silva");
         // Sem email
 
-        when(participanteService.createParticipante(any(Participante.class))).thenReturn(participanteInvalido);
-
         mockMvc.perform(post(API_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(participanteInvalido)))
-                .andExpect(status().isCreated());
-
-        verify(participanteService).createParticipante(any(Participante.class));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
