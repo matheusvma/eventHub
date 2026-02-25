@@ -1,5 +1,6 @@
 package com.example.eventHub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -34,7 +35,8 @@ public class Participante {
     @Schema(description = "Email do participante", example = "joao@example.com", required = true)
     private String email;
 
-    @OneToMany(mappedBy = "participante", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "participante", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonIgnore
     @Schema(description = "Lista de eventos nos quais o participante está inscrito", accessMode = Schema.AccessMode.READ_ONLY)
     private List<Ingresso> eventos;
 }

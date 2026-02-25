@@ -12,13 +12,23 @@ import java.util.List;
 @Service
 public class IngressoService {
 
-    private IngressoRepository ingressoRepository;
+    private final IngressoRepository ingressoRepository;
 
-    private EventoService eventoService;
+    private final EventoService eventoService;
 
-    private ParticipanteService participanteService;
+    private final ParticipanteService participanteService;
 
-    private IngressoValidator ingressoValidator;
+    private final IngressoValidator ingressoValidator;
+
+    public IngressoService(IngressoRepository ingressoRepository,
+                          EventoService eventoService,
+                          ParticipanteService participanteService,
+                          IngressoValidator ingressoValidator) {
+        this.ingressoRepository = ingressoRepository;
+        this.eventoService = eventoService;
+        this.participanteService = participanteService;
+        this.ingressoValidator = ingressoValidator;
+    }
 
     /**
      * Simula a compra de um ingresso por um participante em um evento
@@ -56,6 +66,16 @@ public class IngressoService {
      */
     public List<Ingresso> listarIngressosPorParticipante(Long participanteId) {
         return ingressoRepository.findByParticipanteId(participanteId);
+    }
+
+    /**
+     * Lista todos os ingressos de um evento
+     *
+     * @param eventoId ID do evento
+     * @return Lista de ingressos do evento
+     */
+    public List<Ingresso> listarIngressosPorEvento(Long eventoId) {
+        return ingressoRepository.findByEventoId(eventoId);
     }
 }
 

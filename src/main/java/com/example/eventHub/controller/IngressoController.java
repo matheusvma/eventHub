@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/events/{eventId}/participantes")
-@Tag(name = "Inscrições em Eventos", description = "API para gerenciar compra de ingressos em eventos")
+@RequestMapping("/api/ingressos")
+@Tag(name = "Ingressos", description = "API para gerenciar compra de ingressos em eventos")
 public class IngressoController {
 
     private final IngressoService ingressoService;
@@ -28,7 +28,7 @@ public class IngressoController {
         this.ingressoMapper = ingressoMapper;
     }
 
-    @PostMapping("/{participantId}")
+    @PostMapping("/eventos/{eventId}/participantes/{participantId}")
     @Operation(summary = "Comprar ingresso em evento", description = "Compra um ingresso em um evento")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Compra feita com sucesso"),
@@ -45,11 +45,24 @@ public class IngressoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{participantId}")
+    @GetMapping("/eventos/{eventId}")
+    @Operation(summary = "Listar ingressos do evento", description = "Lista todos os ingressos comprados para um evento específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ingressos listados com sucesso")
+    })
+    public ResponseEntity<List<IngressoResponse>> listarIngressosDoEvento(
+            @Parameter(description = "ID do evento", required = true) @PathVariable Long eventId) {
+
+        List<Ingresso> ingressos = ingressoService.listarIngressosPorEvento(eventId);
+        List<IngressoResponse> response = ingressoMapper.toResponseList(ingressos);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/participantes/{participantId}")
     @Operation(summary = "Listar ingressos de um participante", description = "Lista todos os ingressos comprados por um participante")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ingressos listados com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Participante não encontrado")
+            @ApiResponse(responseCode = "200", description = "Ingressos listados com sucesso")
     })
     public ResponseEntity<List<IngressoResponse>> listarIngressosPorParticipante(
             @Parameter(description = "ID do participante", required = true) @PathVariable Long participantId) {

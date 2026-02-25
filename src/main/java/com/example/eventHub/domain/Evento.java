@@ -1,5 +1,6 @@
 package com.example.eventHub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -48,7 +49,8 @@ public class Evento {
     @Schema(description = "Capacidade máxima de participantes", example = "5000", required = true)
     private Integer capacidade;
 
-    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evento", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonIgnore
     @Schema(description = "Lista de participantes inscritos neste evento", accessMode = Schema.AccessMode.READ_ONLY)
     private List<Ingresso> participantes;
 }
