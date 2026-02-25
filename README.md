@@ -432,14 +432,4 @@ Para dúvidas ou sugestões, entre em contato através das issues do repositóri
 
 **Última atualização**: 25 de Fevereiro de 2026
 
----
-
-## 🙏 Agradecimentos
-
-- Spring Framework Team
-- Community open source
-- Todos que contribuem para melhorar o projeto
-
----
-
 **Made with ❤️ by EventHub Team**
